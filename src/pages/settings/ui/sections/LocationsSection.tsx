@@ -6,15 +6,7 @@ import { getMemberships } from '@/shared/api/auth'
 import type { Membership } from '@/shared/api/auth'
 import { createLocation } from '@/shared/api/locations'
 import { ApiError } from '@/shared/api/client'
-
-function slugify(value: string) {
-	return value
-		.toLowerCase()
-		.normalize('NFD')
-		.replace(/[̀-ͯ]/g, '')
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '')
-}
+import { slugify } from '@/shared/lib/slugify'
 
 export function LocationsSection() {
 	const { token, switchBusiness } = useSession()

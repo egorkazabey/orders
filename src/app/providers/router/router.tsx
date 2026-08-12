@@ -7,12 +7,15 @@ import { OnlineOrdersPage } from '@/pages/online-orders'
 import { SettingsPage } from '@/pages/settings'
 import { StorefrontPage } from '@/pages/storefront'
 import { LoginPage, SignupPage } from '@/pages/auth'
+import { TermsPage, PrivacyPage } from '@/pages/legal'
 import { RequireAuth } from './RequireAuth'
 
 export const router = createBrowserRouter([
 	{ path: ROUTES.onboarding, element: <OnboardingPage /> },
 	{ path: ROUTES.login, element: <LoginPage /> },
 	{ path: ROUTES.signup, element: <SignupPage /> },
+	{ path: ROUTES.terms, element: <TermsPage /> },
+	{ path: ROUTES.privacy, element: <PrivacyPage /> },
 	{
 		element: <RequireAuth />,
 		children: [

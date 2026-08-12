@@ -4,18 +4,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { Button } from '@/shared/ui'
 import { useSession } from '@/entities/session'
 import { ApiError } from '@/shared/api/client'
+import { slugify } from '@/shared/lib/slugify'
 
 const FIELD_CLASSES =
 	'w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-blue-500 focus:outline-none'
-
-function slugify(value: string) {
-	return value
-		.toLowerCase()
-		.normalize('NFD')
-		.replace(/[̀-ͯ]/g, '')
-		.replace(/[^a-z0-9]+/g, '-')
-		.replace(/^-+|-+$/g, '')
-}
 
 export function SignupPage() {
 	const { signup } = useSession()
@@ -56,8 +48,11 @@ export function SignupPage() {
 				{error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
 				<div className="mb-4">
-					<label className="mb-1 block text-sm font-medium text-gray-700">Název podniku</label>
+					<label htmlFor="signup-business-name" className="mb-1 block text-sm font-medium text-gray-700">
+						Název podniku
+					</label>
 					<input
+						id="signup-business-name"
 						required
 						value={businessName}
 						onChange={(e) => handleBusinessNameChange(e.target.value)}
@@ -66,8 +61,11 @@ export function SignupPage() {
 					/>
 				</div>
 				<div className="mb-4">
-					<label className="mb-1 block text-sm font-medium text-gray-700">Adresa webu</label>
+					<label htmlFor="signup-slug" className="mb-1 block text-sm font-medium text-gray-700">
+						Adresa webu
+					</label>
 					<input
+						id="signup-slug"
 						required
 						value={slug}
 						onChange={(e) => {
@@ -80,8 +78,11 @@ export function SignupPage() {
 					{slug && <p className="mt-1 text-xs text-gray-400">Váš web: /s/{slug}</p>}
 				</div>
 				<div className="mb-4">
-					<label className="mb-1 block text-sm font-medium text-gray-700">E-mail</label>
+					<label htmlFor="signup-email" className="mb-1 block text-sm font-medium text-gray-700">
+						E-mail
+					</label>
 					<input
+						id="signup-email"
 						type="email"
 						required
 						value={email}
@@ -90,8 +91,11 @@ export function SignupPage() {
 					/>
 				</div>
 				<div className="mb-6">
-					<label className="mb-1 block text-sm font-medium text-gray-700">Heslo</label>
+					<label htmlFor="signup-password" className="mb-1 block text-sm font-medium text-gray-700">
+						Heslo
+					</label>
 					<input
+						id="signup-password"
 						type="password"
 						required
 						minLength={8}
@@ -104,6 +108,18 @@ export function SignupPage() {
 				<Button variant="primary" type="submit" disabled={isSubmitting} className="w-full">
 					{isSubmitting ? 'Vytváření účtu…' : 'Vytvořit účet'}
 				</Button>
+
+				<p className="mt-4 text-center text-xs text-gray-400">
+					Registrací souhlasíte s{' '}
+					<Link to="/terms" className="underline hover:text-gray-600">
+						obchodními podmínkami
+					</Link>{' '}
+					a{' '}
+					<Link to="/privacy" className="underline hover:text-gray-600">
+						zásadami ochrany osobních údajů
+					</Link>
+					.
+				</p>
 
 				<p className="mt-4 text-center text-sm text-gray-500">
 					Už máte účet?{' '}

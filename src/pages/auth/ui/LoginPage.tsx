@@ -40,8 +40,11 @@ export function LoginPage() {
 				{error && <p className="mb-4 text-sm text-red-600">{error}</p>}
 
 				<div className="mb-4">
-					<label className="mb-1 block text-sm font-medium text-gray-700">E-mail</label>
+					<label htmlFor="login-email" className="mb-1 block text-sm font-medium text-gray-700">
+						E-mail
+					</label>
 					<input
+						id="login-email"
 						type="email"
 						required
 						value={email}
@@ -50,8 +53,11 @@ export function LoginPage() {
 					/>
 				</div>
 				<div className="mb-6">
-					<label className="mb-1 block text-sm font-medium text-gray-700">Heslo</label>
+					<label htmlFor="login-password" className="mb-1 block text-sm font-medium text-gray-700">
+						Heslo
+					</label>
 					<input
+						id="login-password"
 						type="password"
 						required
 						value={password}

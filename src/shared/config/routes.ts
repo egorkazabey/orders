@@ -6,6 +6,8 @@ export const ROUTES = {
 	settings: '/settings',
 	login: '/login',
 	signup: '/signup',
+	terms: '/terms',
+	privacy: '/privacy',
 	storefront: '/s/:slug',
 } as const
 
