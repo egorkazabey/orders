@@ -216,7 +216,7 @@ export function ProductForm({ categories, initialProduct, onAddCategory, onSubmi
 							<input
 								type="number"
 								min={0}
-								value={variant.price}
+								value={variant.price === 0 ? '' : variant.price}
 								onChange={(e) => updateVariant(variant.id, 'price', e.target.value)}
 								className={`${FIELD_CLASSES} w-24`}
 							/>
@@ -261,7 +261,7 @@ export function ProductForm({ categories, initialProduct, onAddCategory, onSubmi
 							<input
 								type="number"
 								min={0}
-								value={addon.price}
+								value={addon.price === 0 ? '' : addon.price}
 								onChange={(e) => updateAddon(addon.id, 'price', e.target.value)}
 								className={`${FIELD_CLASSES} w-24`}
 							/>

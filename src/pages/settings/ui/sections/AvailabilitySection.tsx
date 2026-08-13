@@ -1,12 +1,32 @@
 import { useState } from 'react'
 import { FiCopy, FiPlus, FiTrash2 } from 'react-icons/fi'
 import { useBusiness, WEEKDAY_LABELS, WEEKDAY_ORDER } from '@/entities/business'
+import { useSession } from '@/entities/session'
+import { updateBusiness } from '@/shared/api/business'
 
 export function AvailabilitySection() {
 	const { schedule, isLoading, error, toggleDay, addTimeRange, removeTimeRange, updateTimeRange, copyHoursToDays } =
 		useBusiness()
+	const { token, business, setBusiness } = useSession()
 	const [copyFromDayId, setCopyFromDayId] = useState<string | null>(null)
 	const [copyTargets, setCopyTargets] = useState<Set<string>>(new Set())
+	const [cutoffInput, setCutoffInput] = useState(() => String(business?.orderCutoffMinutes ?? 0))
+	const [isSavingCutoff, setIsSavingCutoff] = useState(false)
+
+	const orderCutoffMinutes = business?.orderCutoffMinutes ?? 0
+
+	async function saveCutoff() {
+		if (!token) return
+		const minutes = Number(cutoffInput)
+		if (!Number.isFinite(minutes) || minutes < 0) return
+		setIsSavingCutoff(true)
+		try {
+			const res = await updateBusiness(token, { orderCutoffMinutes: minutes })
+			setBusiness(res.business)
+		} finally {
+			setIsSavingCutoff(false)
+		}
+	}
 
 	function startCopy(dayId: string) {
 		setCopyFromDayId(dayId)
@@ -39,6 +59,29 @@ export function AvailabilitySection() {
 				<h2 className="text-xl font-semibold text-gray-900">Otevírací hodiny</h2>
 				<p className="mt-1 text-sm text-gray-500">Upravte obecnou provozní dobu svého podniku.</p>
 				{error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+
+				<div className="mt-4 flex flex-wrap items-center gap-2 text-sm">
+					<label htmlFor="order-cutoff" className="text-gray-500">
+						Přestat přijímat objednávky
+					</label>
+					<input
+						id="order-cutoff"
+						type="number"
+						min={0}
+						value={cutoffInput}
+						onChange={(e) => setCutoffInput(e.target.value)}
+						className="w-16 rounded-lg border border-gray-300 px-2 py-1 text-center focus:border-blue-500 focus:outline-none"
+					/>
+					<span className="text-gray-500">min před zavřením</span>
+					<button
+						type="button"
+						onClick={saveCutoff}
+						disabled={isSavingCutoff || Number(cutoffInput) === orderCutoffMinutes}
+						className="cursor-pointer rounded-lg border border-gray-300 px-3 py-1 font-medium text-gray-700 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+					>
+						{isSavingCutoff ? 'Ukládání…' : 'Uložit'}
+					</button>
+				</div>
 			</div>
 
 			{copyFromDayId && (

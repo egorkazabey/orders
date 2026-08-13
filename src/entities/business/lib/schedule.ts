@@ -14,3 +14,13 @@ export function isBusinessOpenNow(schedule: DaySchedule[], now = new Date()) {
 	const nowMinutes = now.getHours() * 60 + now.getMinutes()
 	return day.ranges.some((range) => nowMinutes >= toMinutes(range.fromTime) && nowMinutes < toMinutes(range.toTime))
 }
+
+export function isAcceptingOrders(schedule: DaySchedule[], cutoffMinutes: number, now = new Date()) {
+	const day = schedule.find((d) => d.dayId === DAY_ID_BY_JS_INDEX[now.getDay()])
+	if (!day || !day.enabled) return false
+
+	const nowMinutes = now.getHours() * 60 + now.getMinutes()
+	return day.ranges.some(
+		(range) => nowMinutes >= toMinutes(range.fromTime) && nowMinutes < toMinutes(range.toTime) - cutoffMinutes,
+	)
+}

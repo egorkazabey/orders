@@ -56,6 +56,7 @@ export type Business = {
 	phone: string
 	description: string
 	prepTimeMinutes: number
+	orderCutoffMinutes: number
 	soundEnabled: boolean
 	ringTone: 'classic' | 'chime' | 'alert'
 	quietHoursStart: string | null
